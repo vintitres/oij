@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <algorithm>
 #define N 200010
@@ -11,6 +10,6 @@ int main() {
   cout << (n + 1) / 2 << endl;
   if (n % 2) cout << "1 " << n-- << endl;
   for (int i = 1; i <= n / 2; ++i) {
-    cout << "2 " << i << " " << n - i << endl; 
+    cout << "2 " << i << " " << n - i + 1<< endl; 
   }
 }
