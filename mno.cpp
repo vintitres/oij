@@ -3,28 +3,38 @@
 #include<map>
 #include<vector>
 #include<climits>
+using namespace std;
+
 bool cmp(long long i1, long long i2) {
   return i1 > i2;
 }
 
-using namespace std;
-
 map<pair<long long, short>, short> bestM;
-vector<long long> klocki,maxx;
-short best(long long x, short k){
-  //  cout << x << " " << k << endl;
-  if (x == 1) return 0;
-  if (k == -1 /*|| x > maxx[k]*/) return 200;
+vector<long long> klocki;
+
+short _best(long long x, short k);
+
+short best(long long x, short k) {
   auto it = bestM.find(make_pair(x,k));
   if (it != bestM.end()) return it->second;
-  short b = best(x, k - 1);
-  if (x % klocki[k] == 0LL) {
-    short bb =  best(x / klocki[k], k -1) + 1;
-    b = bb < b ? bb : b;
-  }
+  short b = _best(x,k);
   bestM[make_pair(x,k)] = b;
   return b;
 }
+
+short _best(long long x, short k){
+  if (x == 1) return 0;
+  if (k == -1) return 200;
+  int kk = k - 1;
+  for (kk = k - 1; kk >= 0 && klocki[kk] > x / 2; --kk) if(klocki[kk] == x) return 1;
+  short b = best(x, kk);
+  if (x % klocki[k] == 0LL) {
+    short bb =  best(x / klocki[k], kk) + 1;
+    b = bb < b ? bb : b;
+  }
+  return b;
+}
+
 int main() {
   short k;
   long long x;
@@ -35,27 +45,21 @@ int main() {
     klocki.push_back(kl);
   }
   sort(klocki.begin(),klocki.end(), cmp);
-  for (int i =0 ; i < k; ++i){
-    maxx.push_back((i> 0 ? maxx[i - 1] : 1LL) * klocki[i]);
-  }
   short b = best(x, k - 1);
   if (b > k){
     cout << "NIE" << endl;
     return 0;
   }
   cout<< b <<endl;
-  //return 0;
-  --k;
-  while (x> 1){
-    b = bestM[make_pair(x,k)];
-    while (true) {
-      long long kl = klocki[k--];
-      if (x%kl==0 && bestM[make_pair(x/kl,k)] + 1 == b) {
-        cout << kl << " ";
-        x/=kl;
-        break;
-      }
+  for (--k; b > 1;) {
+    long long kl = klocki[k--];
+    if (kl > x/2) continue;
+    if (x%kl==0 && bestM[make_pair(x/kl,k)] + 1 == b) {
+      cout << kl << " ";
+      x/=kl;
+      --b;
     }
   }
-
+  cout << x << endl;
+  return 0;
 }
