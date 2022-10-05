@@ -8,10 +8,22 @@ using namespace std;
 class Puzzle {
 private:
   vector<vector<bool>> puzzle;
-  int imin, imax, jmin, jmax;
-  pair<int,int> _firstdot;
-  Puzzle() { _firstdot = make_pair(-1,-1);}
+  Puzzle(vector<vector<bool>> puzzle) {
+    self.puzzle = puzzle;
+  }
 public:
+  Puzzle genflip90() const {
+    int n = puzzle.size();
+    int m = puzzle[0].size()
+    int newn = m, newm = n;
+    vector<vector<bool>> newpuzzle;
+    for (int i = 0; i < newn; ++i){
+      vector<bool> newpuzzlerow;
+      for (int j = 0; j < newm; ++j) {
+        newpuzzlerow.push_back(puzzle[j]
+
+
+
   static Puzzle read() {
     Puzzle puz;
     int n,m;
